@@ -9,7 +9,7 @@ Proyecto del curso Interacción Humano Computador
 ## Tema a desarrollar
 > Aplicación para la administración de tareas personales, usando comandos de voz y 
 > reconocimiento de gestos de manos.
-> La aplicación ayudará al usuario a gestionar y su tiempo, organizando distintos
+> La aplicación ayudará al usuario a gestionar su tiempo, organizando distintos
 > tipos de tareas y eventos ayudándose con el reconocimiento de voz y gestos de 
 > mano para agregar, editar y/o borrar tareas de su agenda.
 
