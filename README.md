@@ -2,8 +2,8 @@
 Proyecto del curso Interacción Humano Computador
 
 ## Integrantes
--
--
+- Catalino Morales Breiner
+- Olivares Ventura Ricardo Leonardo
 - Borjas Córdova Guillermo Joel
 
 ## Tema a desarrollar
