@@ -20,3 +20,4 @@ Proyecto del curso Interacción Humano Computador
 - Editar/Borrar tarea/evento de la agenda.
 - Contará con recordatorio para tareas urgentes/próximas.
 - Usará un sistema de 'gamificación' cada vez que el usuario cumpla con sus tareas/eventos programados.
+- Se utilizará un sistema de reconocimiento de gestos de las manos para realizar las acciones de marcar como completado/en progreso/eliminar una tarea/evento.
