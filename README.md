@@ -6,6 +6,12 @@ Proyecto del curso Interacción Humano Computador
 - Olivares Ventura Ricardo Leonardo
 - Borjas Córdova Guillermo Joel
 
+## Links
+- Figma: 
+https://www.figma.com/file/yKOvPvZlY3Xg2QqemsxZZW/Gestask?type=design&node-id=0-1&t=8x1ldU8uLcq59dIM-0
+- PPT:
+https://docs.google.com/presentation/d/1J0JwoUsqnJ3dGyImgNIOt-3tBHlUI6UeQz2Pl4Os9N0/edit#slide=id.g1e29012d3b9_2_99
+
 ## Tema a desarrollar
 > Aplicación para la administración de tareas personales, usando comandos de voz y 
 > reconocimiento de gestos de manos.
