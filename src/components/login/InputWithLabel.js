@@ -13,6 +13,8 @@ export default function InputWithLabel({
   showPassword,
   setShowPassword,
   marginTop = 0,
+  error,
+  errorMessage,
 }) {
   const onChange = (event) => {
     setValue(event.target.value);
@@ -40,6 +42,7 @@ export default function InputWithLabel({
           </IconButton>
         )}
       </InputContainer>
+      {error && <Error>{errorMessage}</Error>}
     </Container>
   );
 }
@@ -85,4 +88,11 @@ const Input = styled.input`
   flex: 1;
   font-family: ${(props) => props.theme.fonts.medium};
   color: white;
+`;
+
+const Error = styled.p`
+  color: red;
+  font-family: ${(props) => props.theme.fonts.regular};
+  font-size: 16px;
+  margin-top: 10px;
 `;

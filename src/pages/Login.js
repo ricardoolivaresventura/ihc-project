@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
+import { signInWithPopup, signInWithEmailAndPassword } from 'firebase/auth';
 import InputWithLabel from '../components/login/InputWithLabel';
 import CustomButton from '../components/login/CustomButton';
+import { validationEmail } from '../utils/validationEmail';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,9 +13,52 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [formError, setFormError] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   const navigateToSignupPage = () => {
     navigate('/register');
+  };
+
+  const handleClick = () => {
+    const errors = {};
+    setLoginError('');
+    if (!email || !password) {
+      if (!email) {
+        errors.email = true;
+        errors.emailError = 'El correo es obligatorio';
+      }
+      if (!password) {
+        errors.password = true;
+        errors.passwordError = 'La contraseña es obligatoria';
+      }
+    } else if (!validationEmail(email?.trim())) {
+      errors.email = true;
+      errors.emailError = 'Introduce un correo válido';
+    } else {
+      setLoading(true);
+      signInWithEmailAndPassword(auth, email.trim(), password)
+        .then(() => {
+          navigate('/');
+        })
+        .catch((err) => {
+          console.log('Err: ', err);
+          let message = 'Correo o contraseña incorrectos';
+          switch (err.code) {
+            case 'auth/user-not-found':
+              message = 'Correo no registrado';
+              break;
+            case 'auth/unknown':
+              message = 'Ha ocurrido un error, revisa tu conexión a internet';
+              break;
+            default:
+              break;
+          }
+          setLoading(false);
+          setLoginError(message);
+        });
+    }
+    setFormError(errors);
   };
 
   return (
@@ -50,8 +96,9 @@ export default function Login() {
           errorMessage={formError.passwordError}
           marginTop={25}
         />
+        {loginError && <Error>{loginError}</Error>}
         <Footer>
-          <CustomButton title={'Ingresar'} />
+          <CustomButton title={'Ingresar'} handleClick={handleClick} loading={loading} />
           <DoesntHaveAccount onClick={navigateToSignupPage}>
             ¿No tienes una cuenta? <DoesntHaveAccountButton>Regístrate</DoesntHaveAccountButton>
           </DoesntHaveAccount>
@@ -154,4 +201,10 @@ const DoesntHaveAccountButton = styled.span`
   cursor: pointer;
   color: ${(props) => props.theme.colors.primary};
   font-family: ${(props) => props.theme.fonts.semiBold};
+`;
+const Error = styled.p`
+  color: red;
+  font-family: ${(props) => props.theme.fonts.regular};
+  font-size: 16px;
+  margin-top: 10px;
 `;

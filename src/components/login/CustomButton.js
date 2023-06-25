@@ -1,11 +1,12 @@
 import React from 'react';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
+import { CircularProgress } from '@mui/material';
 
-export default function CustomButton({ title, maxWidth = 450 }) {
+export default function CustomButton({ title, maxWidth = 450, handleClick, loading = false }) {
   return (
-    <ButtonStyled maxWidth={maxWidth}>
-      <Text>{title}</Text>
+    <ButtonStyled maxWidth={maxWidth} onClick={handleClick} disabled={loading}>
+      {loading ? <CircularProgress style={{ color: 'white' }} size={30} /> : <Text>{title}</Text>}
     </ButtonStyled>
   );
 }
