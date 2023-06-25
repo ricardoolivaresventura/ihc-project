@@ -1,20 +1,43 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
 import CustomMenu from '../globals/CustomMenu';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
 
 export default function HeaderProfile() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(user);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const onPressSignOut = async () => {
+    try {
+      await signOut(auth).then(() => {});
+    } catch (err) {
+      console.log('Err: ', err);
+    }
+  };
 
   const options = [
     {
       label: 'Cerrar sesión',
       icon: <LogoutIcon style={{ color: '#3C3C3B' }} />,
       action: () => {
-        navigate('/login');
+        onPressSignOut();
         setAnchorEl(null);
       },
     },
@@ -22,6 +45,14 @@ export default function HeaderProfile() {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const getAvatar = () => {
+    return user?.email ? `${user?.email?.charAt(0)}${user?.email?.charAt(1)}` : '';
+  };
+
+  const getEmail = () => {
+    return user?.email ?? '';
   };
 
   return (
@@ -32,9 +63,9 @@ export default function HeaderProfile() {
         </LineContainer>
         <Content>
           <ProfileContainer>
-            <Profile>MA</Profile>
+            <Profile>{getAvatar()}</Profile>
           </ProfileContainer>
-          <Name>María Alejandra Gutiérrez</Name>
+          <Name>{getEmail()}</Name>
           <KeyboardArrowDownIcon style={{ color: 'white' }} />
         </Content>
       </Container>
@@ -96,6 +127,7 @@ const ProfileContainer = styled.div`
 const Profile = styled.div`
   color: white;
   font-size: 13px;
+  text-transform: uppercase;
 `;
 
 const Name = styled.p`
