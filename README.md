@@ -7,8 +7,6 @@ Proyecto del curso Interacción Humano Computador
 - Borjas Córdova Guillermo Joel
 
 ## Links
-- REPOSITORIO BACKEND:
-https://github.com/Billy-freespace/ihc-project-GesTask-backend
 - Figma: 
 https://www.figma.com/file/yKOvPvZlY3Xg2QqemsxZZW/Gestask?type=design&node-id=0-1&t=8x1ldU8uLcq59dIM-0
 - PPT:
