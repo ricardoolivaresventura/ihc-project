@@ -26,7 +26,9 @@ export default function HeaderProfile() {
 
   const onPressSignOut = async () => {
     try {
-      await signOut(auth).then(() => {});
+      await signOut(auth).then(() => {
+        navigate('/login');
+      });
     } catch (err) {
       console.log('Err: ', err);
     }

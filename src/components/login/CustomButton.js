@@ -3,9 +3,21 @@ import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import { CircularProgress } from '@mui/material';
 
-export default function CustomButton({ title, maxWidth = 450, handleClick, loading = false }) {
+export default function CustomButton({
+  title,
+  maxWidth = 450,
+  handleClick,
+  loading = false,
+  paddingLeft = 0,
+  paddingRight = 0,
+}) {
   return (
-    <ButtonStyled maxWidth={maxWidth} onClick={handleClick} disabled={loading}>
+    <ButtonStyled
+      style={{ paddingLeft: `${paddingLeft}px`, paddingRight: `${paddingRight}px` }}
+      maxWidth={maxWidth}
+      onClick={handleClick}
+      disabled={loading}
+    >
       {loading ? <CircularProgress style={{ color: 'white' }} size={30} /> : <Text>{title}</Text>}
     </ButtonStyled>
   );
