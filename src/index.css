@@ -1,13 +1,39 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'Figtree-Bold';
+  src: url('./fonts/Figtree/Figtree-Bold.ttf') format('trueType');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: 'Figtree-SemiBold';
+  src: url('./fonts/Figtree/Figtree-SemiBold.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Figtree-Medium';
+  src: url('./fonts/Figtree/Figtree-Medium.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Figtree-Regular';
+  src: url('./fonts/Figtree/Figtree-Regular.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Segoe-UI';
+  src: url('./fonts/Segoe/Segoe-UI.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Segoe-UI-Italic';
+  src: url('./fonts/Segoe/Segoe-UI-Italic.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Segoe-UI-Bold';
+  src: url('./fonts/Segoe/Segoe-UI-Bold.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Segoe-UI-Bold-Italic';
+  src: url('./fonts/Segoe/Segoe-UI-Bold-Italic.ttf') format('trueType');
 }

@@ -1,25 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+/* eslint-disable no-unused-vars */
+import React from 'react';
+import {
+  BrowserRouter as Router,
+  createBrowserRouter,
+  RouterProvider,
+  Routes,
+  Route,
+} from 'react-router-dom';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Layout from './pages/Layout';
+import Home from './pages/Home';
+import Settings from './pages/Settings';
+import Statistics from './pages/Statistics';
+import Categories from './pages/Categories';
+import Priorities from './pages/Priorities';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const router = createBrowserRouter([
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    element: <Signup />,
+  },
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: '/statistics',
+        element: <Statistics />,
+      },
+      {
+        path: '/categories',
+        element: <Categories />,
+      },
+      {
+        path: '/priorities',
+        element: <Priorities />,
+      },
+      {
+        path: '/settings',
+        element: <Settings />,
+      },
+    ],
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={router} />;
 }
-
-export default App;
