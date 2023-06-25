@@ -2,9 +2,9 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
 
-export default function CustomButton({ title }) {
+export default function CustomButton({ title, maxWidth = 450 }) {
   return (
-    <ButtonStyled>
+    <ButtonStyled maxWidth={maxWidth}>
       <Text>{title}</Text>
     </ButtonStyled>
   );
@@ -12,7 +12,7 @@ export default function CustomButton({ title }) {
 
 const ButtonStyled = styled(Button)`
   width: 100%;
-  max-width: 450px;
+  max-width: ${(props) => `${props.maxWidth}px`};
   background-color: ${(props) => props.theme.colors.primary};
   height: 54px;
 `;
