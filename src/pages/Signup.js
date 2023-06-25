@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import InputWithLabel from '../components/login/InputWithLabel';
 import CustomButton from '../components/login/CustomButton';
+import { validationEmail } from '../utils/validationEmail';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -12,9 +15,65 @@ export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [formError, setFormError] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [loginError, setLoginError] = useState('');
 
   const navigateToLoginPage = () => {
     navigate('/login');
+  };
+
+  const handleClick = () => {
+    const errors = {};
+    setLoginError('');
+    if (!email || !password || !repeatPassword) {
+      if (!email) {
+        errors.email = true;
+        errors.emailError = 'El correo es obligatorio';
+      }
+      if (!password) {
+        errors.password = true;
+        errors.passwordError = 'La contraseña es obligatoria';
+      }
+      if (!repeatPassword) {
+        errors.repeatPassword = true;
+        errors.repeatPasswordError = 'La contraseña es obligatoria';
+      }
+    } else if (!validationEmail(email?.trim())) {
+      errors.email = true;
+      errors.emailError = 'Introduce un correo válido';
+    } else if (password.trim() !== repeatPassword.trim()) {
+      errors.password = true;
+      errors.passwordError = 'Las contraseñas no coinciden';
+      errors.repeatPassword = true;
+      errors.repeatPasswordError = 'Las contraseñas no coinciden';
+    } else if (password.trim().length < 6) {
+      errors.password = true;
+      errors.passwordError = 'Las contraseña debe tener mínimo 6 caracteres';
+      errors.repeatPassword = true;
+      errors.repeatPasswordError = 'Las contraseña debe tener mínimo 6 caracteres';
+    } else {
+      setLoading(true);
+      createUserWithEmailAndPassword(auth, email.trim(), password)
+        .then(async (response) => {
+          navigate('/');
+        })
+        .catch((err) => {
+          let message = 'Ocurrió un error, inténtalo otra vez';
+          switch (err.code) {
+            case 'auth/email-already-in-use':
+              message = 'El correo ya está siendo utilizado';
+              break;
+            case 'auth/internal-error':
+              message = 'Ocurrió un error, inténtalo otra vez';
+              break;
+            default:
+              break;
+          }
+          setLoading(false);
+          setLoginError(message);
+        });
+    }
+    setFormError(errors);
   };
 
   return (
@@ -64,8 +123,9 @@ export default function Signup() {
           errorMessage={formError.repeatPasswordError}
           marginTop={25}
         />
+        {loginError && <Error>{loginError}</Error>}
         <Footer>
-          <CustomButton title={'Ingresar'} />
+          <CustomButton title={'Registrarte'} loading={loading} handleClick={handleClick} />
           <DoesntHaveAccount onClick={navigateToLoginPage}>
             ¿Ya tienes una cuenta? <DoesntHaveAccountButton>Inicia sesión</DoesntHaveAccountButton>
           </DoesntHaveAccount>
@@ -168,4 +228,11 @@ const DoesntHaveAccountButton = styled.span`
   cursor: pointer;
   color: ${(props) => props.theme.colors.primary};
   font-family: ${(props) => props.theme.fonts.semiBold};
+`;
+
+const Error = styled.p`
+  color: red;
+  font-family: ${(props) => props.theme.fonts.regular};
+  font-size: 16px;
+  margin-top: 10px;
 `;
