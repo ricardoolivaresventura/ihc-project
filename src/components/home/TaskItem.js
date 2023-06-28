@@ -6,7 +6,7 @@ import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 import { formatLessThan10 } from '../../utils/formatLessThan10';
 import { MONTHS } from '../../utils/constants';
 
-export default function TaskItem({ title, categories, description, createdAt }) {
+export default function TaskItem({ title, categories, description, createdAt, id }) {
   const getCreatedAt = () => {
     const auxCreatedAt = new Date(createdAt.seconds * 1000);
     const fullYear = auxCreatedAt.getFullYear();
@@ -20,7 +20,7 @@ export default function TaskItem({ title, categories, description, createdAt }) 
   };
 
   return (
-    <Container to={`/task/${2}`}>
+    <Container to={`/tasks/${id}`}>
       <Header>
         {categories.map((categoryId, index) => (
           <TaskCategoryItem key={index} categoryId={categoryId} />

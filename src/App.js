@@ -15,6 +15,7 @@ import Settings from './pages/Settings';
 import Statistics from './pages/Statistics';
 import Categories from './pages/Categories';
 import Priorities from './pages/Priorities';
+import TaskPage from './pages/TaskPage';
 
 const router = createBrowserRouter([
   {
@@ -34,17 +35,21 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: '/tasks/:taskId',
+        element: <TaskPage />,
+      },
+      /*       {
         path: '/statistics',
         element: <Statistics />,
-      },
+      }, */
       {
         path: '/categories',
         element: <Categories />,
       },
-      {
+      /*       {
         path: '/priorities',
         element: <Priorities />,
-      },
+      }, */
       {
         path: '/settings',
         element: <Settings />,
