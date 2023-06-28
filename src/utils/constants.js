@@ -20,3 +20,26 @@ export const ACTIONS = [
     name: 'Marcar tarea como pendiente',
   },
 ];
+
+export const PRIORITIES = [
+  {
+    value: 'CRITICAL',
+    name: 'Crítico',
+  },
+  {
+    value: 'URGENT',
+    name: 'Urgente',
+  },
+  {
+    value: 'IMPORTANT',
+    name: 'Importante',
+  },
+  {
+    value: 'DEFERRABLE',
+    name: 'Aplazable',
+  },
+  {
+    value: 'WITHOUT_IMPORTANCE',
+    name: 'Sin importancia',
+  },
+];

@@ -6,6 +6,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 import CustomButton from '../components/login/CustomButton';
 import AddOptionsModal from '../components/globals/AddOptionsModal';
+import NewTaskModal from '../components/globals/NewTaskModal';
 
 export default function Home() {
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
@@ -16,12 +17,14 @@ export default function Home() {
     {
       label: 'Crear categoría',
       action: () => {
+        setIsOptionsVisible(false);
         setIsNewCategoryModalVisible(true);
       },
     },
     {
       label: 'Crear tarea',
       action: () => {
+        setIsOptionsVisible(false);
         setIsNewTaskModalVisible(true);
       },
     },
@@ -34,6 +37,7 @@ export default function Home() {
         setIsVisible={setIsOptionsVisible}
         options={options}
       />
+      <NewTaskModal isVisible={isNewTaskModalVisible} setIsVisible={setIsNewTaskModalVisible} />
     </Container>
   );
 }
