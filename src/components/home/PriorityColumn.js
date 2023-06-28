@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 import TaskItem from './TaskItem';
 import { auth, db } from '../../firebase';
+import { useDispatch } from 'react-redux';
+import { setDefaultPriority } from '../../context/reducers/gestures';
 
 export default function PriorityColumn({
   title,
@@ -12,10 +15,12 @@ export default function PriorityColumn({
   bgColor = '#14FF00',
   priority,
   message,
+  setIsNewTaskModalVisible,
 }) {
   const user = auth.currentUser;
   const tasksReference = collection(db, 'tasks');
   const isMounted = useRef(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     isMounted.current = true;
@@ -61,10 +66,25 @@ export default function PriorityColumn({
     };
   }, []);
 
+  const createNewTask = () => {
+    dispatch(
+      setDefaultPriority({
+        defaultPriority: priority,
+      }),
+    );
+    setIsNewTaskModalVisible(true);
+  };
+
   return (
     <Container>
       <Header style={{ backgroundColor: bgColor }}>
         <Title>{title}</Title>
+        <IconButton
+          style={{ backgroundColor: '#5051F9', borderRadius: '5px', marginRight: '12px' }}
+          onClick={createNewTask}
+        >
+          <AddIcon style={{ color: 'white' }} fontSize='small' />
+        </IconButton>
         {tasks !== null && <Quantity>{tasks?.length} tareas</Quantity>}
       </Header>
       {tasks === null ? (

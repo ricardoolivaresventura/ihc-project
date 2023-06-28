@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import TaskCategoryItem from './TaskCategoryItem';
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 import { formatLessThan10 } from '../../utils/formatLessThan10';
 import { MONTHS } from '../../utils/constants';
 
-export default function TaskItem({ title, categories, description, createdAt, id }) {
+export default function TaskItem({ title, categories, description, createdAt, id, completed }) {
   const getCreatedAt = () => {
     const auxCreatedAt = new Date(createdAt.seconds * 1000);
     const fullYear = auxCreatedAt.getFullYear();
@@ -30,6 +31,7 @@ export default function TaskItem({ title, categories, description, createdAt, id
       <Description>{getDescription()}</Description>
       <Footer>
         <CreatedAt>{getCreatedAt()}</CreatedAt>
+        {completed && <CheckCircleIcon style={{ color: 'green' }} />}
       </Footer>
     </Container>
   );
@@ -71,7 +73,7 @@ const Footer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   margin-top: 16px;
 `;
 
