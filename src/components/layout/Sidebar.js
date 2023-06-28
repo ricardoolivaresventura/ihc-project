@@ -20,17 +20,13 @@ export default function Sidebar() {
       pathname: '/',
       icon: <Home color={isSelected('/') ? 'white' : '#5F6388'} />,
     },
-    {
+    /*     {
       pathname: '/statistics',
       icon: <Statistics color={isSelected('/statistics') ? 'white' : '#5F6388'} />,
-    },
+    }, */
     {
       pathname: '/categories',
       icon: <Categories color={isSelected('/categories') ? 'white' : '#5F6388'} />,
-    },
-    {
-      pathname: '/priorities',
-      icon: <Priorities color={isSelected('/priorities') ? 'white' : '#5F6388'} />,
     },
     {
       pathname: '/settings',

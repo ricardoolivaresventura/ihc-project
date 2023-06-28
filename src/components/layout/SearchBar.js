@@ -6,8 +6,8 @@ export default function SearchBar() {
   return (
     <Container>
       <InputContainer>
-        <SearchIcon style={{ color: 'white' }} />
-        <Input placeholder='Buscar...' />
+        {/* <SearchIcon style={{ color: 'white' }} />
+        <Input placeholder='Buscar...' /> */}
       </InputContainer>
     </Container>
   );
@@ -23,7 +23,8 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #050505;
+  //background-color: #050505;
+  background-color: transparent;
   height: 100%;
   max-width: 650px;
   margin-right: 40px;

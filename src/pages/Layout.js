@@ -4,8 +4,12 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 import Header from '../components/layout/Header';
 import Sidebar from '../components/layout/Sidebar';
+import CustomSnackbar from '../components/globals/CustomSnackbar';
+import { closeSnackbar } from '../context/reducers/generalSnackbar';
 
 export default function Layout() {
+  const generalSnackbar = useSelector((state) => state.generalSnackbar);
+  const dispatch = useDispatch();
   return (
     <Container>
       <Header />
@@ -13,6 +17,12 @@ export default function Layout() {
         <Sidebar />
         <Outlet />
       </MainContainer>
+      <CustomSnackbar
+        type={generalSnackbar.type}
+        open={generalSnackbar.isOpen}
+        setOpen={() => dispatch(closeSnackbar({}))}
+        message={generalSnackbar.message}
+      />
     </Container>
   );
 }

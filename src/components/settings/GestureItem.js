@@ -6,7 +6,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CustomMenu from '../globals/CustomMenu';
 import { ACTIONS } from '../../utils/constants';
 
-export default function GestureItem({ img }) {
+export default function GestureItem({ img, action }) {
   const [selectedValue, setSelectedValue] = useState(ACTIONS[0].value);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -35,17 +35,20 @@ export default function GestureItem({ img }) {
         <Image src={img} />
       </ImageContainer>
       <StyledButton
-        onClick={handleClick}
-        endIcon={<KeyboardArrowDownIcon style={{ color: 'white' }} />}
+        disabled
+        /* onClick={handleClick}
+        endIcon={<KeyboardArrowDownIcon style={{ color: 'white' }} />} */
       >
-        <Text>{getSelectedValue()}</Text>
+        {/*      <Text>{getSelectedValue()}</Text> */}
+        <Text>{action}</Text>
       </StyledButton>
-      <CustomMenu
+      {/*     <Action>{action}</Action> */}
+      {/*  <CustomMenu
         anchorEl={anchorEl}
         setAnchorEl={setAnchorEl}
         options={options}
         color={'#3C3C3B'}
-      />
+      /> */}
     </Container>
   );
 }
@@ -72,3 +75,5 @@ const Text = styled.p`
   color: white;
   text-transform: none;
 `;
+
+const Action = styled.p``;

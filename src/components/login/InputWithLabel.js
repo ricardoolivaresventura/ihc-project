@@ -15,6 +15,7 @@ export default function InputWithLabel({
   marginTop = 0,
   error,
   errorMessage,
+  background = '#1E1F25',
 }) {
   const onChange = (event) => {
     setValue(event.target.value);
@@ -25,7 +26,7 @@ export default function InputWithLabel({
       <Header>
         <Label>{label}</Label>
       </Header>
-      <InputContainer>
+      <InputContainer background={background}>
         <Input
           onChange={onChange}
           type={type === 'password' ? (!showPassword ? 'password' : 'text') : 'text'}
@@ -69,7 +70,7 @@ const Label = styled.p`
 `;
 
 const InputContainer = styled.div`
-  background-color: ${(props) => props.theme.colors.secondaryBackground};
+  background-color: ${(props) => props.background};
   height: 54px;
   border-radius: 10px;
   display: flex;

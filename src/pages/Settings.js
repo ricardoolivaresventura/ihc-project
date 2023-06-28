@@ -16,8 +16,8 @@ export default function Settings() {
   return (
     <Container>
       <Header>
-        <Title>Configuración</Title>
-        <CustomButton title={'Guardar'} maxWidth={300} />
+        <Title>Gestos & Comandos de voz</Title>
+        {/*  <CustomButton title={'Guardar'} maxWidth={300} /> */}
       </Header>
       <TabsContainer>
         <Tabs value={value} onChange={hanldeChange}>

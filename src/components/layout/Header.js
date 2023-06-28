@@ -1,9 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import IconButton from '@mui/material/IconButton';
+import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import * as handTrack from 'handtrackjs';
 import HeaderProfile from './HeaderProfile';
 import SearchBar from './SearchBar';
+import HandTracking from '../globals/HandTracking';
+import SpeechTracking from '../globals/SpeechTracking';
 
 export default function Header() {
+  const handleVideo = () => {
+    const video = document.getElementById('video_handtrack');
+    handTrack.startVideo(video);
+  };
+
   return (
     <CustomHeader>
       <LeftContainer>
@@ -13,6 +24,16 @@ export default function Header() {
         <Name>GesTask</Name>
       </LeftContainer>
       <SearchBar />
+      <HandTracking />
+      <SpeechTracking />
+      {/* <ButtonsContainer>
+        <IconButton
+          onClick={handleVideo}
+          style={{ borderColor: '#5051F9', borderWidth: '1px', borderStyle: 'solid' }}
+        >
+          <KeyboardVoiceIcon style={{ color: 'white' }} />
+        </IconButton>
+      </ButtonsContainer> */}
       <HeaderProfile />
     </CustomHeader>
   );
@@ -54,4 +75,10 @@ const Name = styled.p`
   font-size: 25px;
   font-family: ${(props) => props.theme.fonts.semiBold};
   padding-left: 5px;
+`;
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 `;
