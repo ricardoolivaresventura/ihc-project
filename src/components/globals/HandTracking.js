@@ -15,7 +15,6 @@ const HandTracking = () => {
   const dispatch = useDispatch();
 
   const startHandTracking = async () => {
-    console.log('startHandTracking');
     const video = videoRef.current;
 
     const defaultParams = {
@@ -41,15 +40,10 @@ const HandTracking = () => {
         setIsVideoActived(true);
         dispatch(activeCamera({}));
         if (status) {
-          console.log('Cámara activada correctamente');
           runHandTracking();
-        } else {
-          console.log('No se pudo activar la cámara');
         }
       })
-      .catch((error) => {
-        console.error('Error al activar la cámara:', error);
-      });
+      .catch(() => {});
   };
 
   const runHandTracking = async () => {

@@ -105,7 +105,7 @@ export default function SpeechTracking() {
 
   useEffect(() => {
     if (finalTranscript !== '') {
-      console.log('Got final result:', finalTranscript);
+      console.log('');
     }
   }, [interimTranscript, finalTranscript]);
 
