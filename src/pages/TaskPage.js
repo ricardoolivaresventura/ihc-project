@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { collection, doc, getDoc, onSnapshot, query, writeBatch } from 'firebase/firestore';
 import { CircularProgress } from '@mui/material';
@@ -14,6 +14,7 @@ import { openSnackbar } from '../context/reducers/generalSnackbar';
 import { useDispatch } from 'react-redux';
 
 export default function TaskPage() {
+  const navigate = useNavigate();
   const { taskId } = useParams();
   const [task, setTask] = useState(null);
   const user = auth.currentUser;
@@ -43,9 +44,13 @@ export default function TaskPage() {
       q,
       (docSnap) => {
         if (docSnap.exists) {
-          const object = docSnap.data();
-          object.id = docSnap.id;
-          setTask(object);
+          if (isMounted.current) {
+            const object = docSnap?.data();
+            if (object !== undefined) {
+              object.id = docSnap?.id;
+              setTask(object);
+            }
+          }
         }
       },
       () => {},
@@ -54,12 +59,14 @@ export default function TaskPage() {
 
   useEffect(() => {
     if (task !== null) {
-      setTitle(task.title);
-      setDescription(task.description);
-      setSelectedCategories(task.categories);
-      setCreatedAt(new Date(task.createdAt.seconds * 1000));
-      setCompleted(task.completed);
-      setSelectedPriority(task.priority);
+      if (isMounted.current) {
+        setTitle(task?.title);
+        setDescription(task?.description);
+        setSelectedCategories(task?.categories);
+        setCreatedAt(new Date(task?.createdAt.seconds * 1000));
+        setCompleted(task?.completed);
+        setSelectedPriority(task?.priority);
+      }
     }
   }, [task]);
 
@@ -95,7 +102,7 @@ export default function TaskPage() {
           dispatch(
             openSnackbar({
               type: 'error',
-              message: 'Ocurrió un error al actualizar la tarea',
+              message: 'Ocurrió un error al intentar actualizar la tarea',
             }),
           );
         })
@@ -104,6 +111,37 @@ export default function TaskPage() {
         });
     }
     setFormError(errors);
+  };
+
+  const deleteTask = async () => {
+    setDeleting(true);
+    const batch = writeBatch(db);
+    const taskReference = doc(taskCollection, taskId);
+    batch.delete(taskReference);
+    await batch
+      .commit()
+      .then(() => {
+        navigate('/');
+        dispatch(
+          openSnackbar({
+            type: 'success',
+            message: 'Tarea eliminada correctamente',
+          }),
+        );
+      })
+      .catch(() => {
+        dispatch(
+          openSnackbar({
+            type: 'error',
+            message: 'Ocurrió un error al intentar eliminar la tarea',
+          }),
+        );
+      })
+      .finally(() => {
+        if (isMounted.current) {
+          setDeleting(false);
+        }
+      });
   };
 
   if (task == null) {
@@ -187,6 +225,7 @@ export default function TaskPage() {
             loading={deleting || savingChanges}
             title={'Eliminar tarea'}
             withBackground={false}
+            handleClick={deleteTask}
           />
         </Column>
       </Content>
