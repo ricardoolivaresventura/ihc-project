@@ -29,7 +29,7 @@ export default function PriorityColumn({
       tasksReference,
       where('userId', '==', user?.uid),
       where('priority', '==', priority),
-      orderBy('createdAt', 'desc'),
+      orderBy('createdAt', 'asc'),
     );
 
     const suscriber = onSnapshot(

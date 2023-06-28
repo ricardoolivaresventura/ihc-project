@@ -7,6 +7,7 @@ import * as handTrack from 'handtrackjs';
 import HeaderProfile from './HeaderProfile';
 import SearchBar from './SearchBar';
 import HandTracking from '../globals/HandTracking';
+import SpeechTracking from '../globals/SpeechTracking';
 
 export default function Header() {
   const handleVideo = () => {
@@ -24,6 +25,7 @@ export default function Header() {
       </LeftContainer>
       <SearchBar />
       <HandTracking />
+      <SpeechTracking />
       {/* <ButtonsContainer>
         <IconButton
           onClick={handleVideo}

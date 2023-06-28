@@ -15,11 +15,12 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import HandTracking from '../components/globals/HandTracking';
 import { openSnackbar } from '../context/reducers/generalSnackbar';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { collection, doc, writeBatch } from 'firebase/firestore';
 
 export default function Home() {
   const navigate = useNavigate();
+  const currentGesture = useSelector((state) => state.gestures.currentGesture);
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
   const [isNewCategoryModalVisible, setIsNewCategoryModalVisible] = useState(false);
   const [isNewTaskModalVisible, setIsNewTaskModalVisible] = useState(false);
@@ -47,6 +48,14 @@ export default function Home() {
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (currentGesture === 'open') {
+      setIsNewTaskModalVisible(true);
+    } else if (currentGesture === 'closed') {
+      setIsNewTaskModalVisible(false);
+    }
+  }, [currentGesture]);
 
   const options = [
     {

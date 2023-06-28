@@ -12,6 +12,7 @@ import { collection, doc, writeBatch } from 'firebase/firestore';
 import dayjs from 'dayjs';
 import { useDispatch } from 'react-redux';
 import { openSnackbar } from '../../context/reducers/generalSnackbar';
+import { useNavigate } from 'react-router-dom';
 
 export default function NewTaskModal({ isVisible, setIsVisible }) {
   const [creating, setCreating] = useState(false);
@@ -24,6 +25,7 @@ export default function NewTaskModal({ isVisible, setIsVisible }) {
   const [selectedDate, setSelectedDate] = useState(dayjs(today));
   const user = auth.currentUser;
   const tasksRef = collection(db, 'tasks');
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const emptyFields = () => {
@@ -58,13 +60,14 @@ export default function NewTaskModal({ isVisible, setIsVisible }) {
         .commit()
         .then(() => {
           setIsVisible(false);
+          emptyFields();
           dispatch(
             openSnackbar({
               type: 'success',
               message: 'Tarea agregada correctamente',
             }),
           );
-          emptyFields();
+          navigate('/');
         })
         .catch(() => {
           setIsVisible(false);

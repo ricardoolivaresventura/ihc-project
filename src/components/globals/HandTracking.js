@@ -3,6 +3,8 @@ import * as handTrack from 'handtrackjs';
 import styled, { keyframes } from 'styled-components';
 import { IconButton } from '@mui/material';
 import VideocamIcon from '@mui/icons-material/Videocam';
+import { useDispatch } from 'react-redux';
+import { activeCamera, desactiveCamera, setCurrentGesture } from '../../context/reducers/gestures';
 
 const HandTracking = () => {
   const videoRef = useRef();
@@ -10,6 +12,7 @@ const HandTracking = () => {
   const modelRef = useRef(null);
   const [gesture, setGesture] = useState('');
   const [isVideoActived, setIsVideoActived] = useState(false);
+  const dispatch = useDispatch();
 
   const startHandTracking = async () => {
     const video = videoRef.current;
@@ -35,6 +38,7 @@ const HandTracking = () => {
       .startVideo(video)
       .then((status) => {
         setIsVideoActived(true);
+        dispatch(activeCamera({}));
         if (status) {
           console.log('Cámara activada correctamente');
           runHandTracking();
@@ -59,29 +63,22 @@ const HandTracking = () => {
       modelRef.current.renderPredictions(predictions, canvas, context, video);
       if (gestureName !== 'face') {
         setGesture(gestureName);
+        dispatch(
+          setCurrentGesture({
+            currentGesture: gestureName,
+          }),
+        );
       }
     }
 
     requestAnimationFrame(runHandTracking);
   };
 
-  const isCameraOn = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (stream) {
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.error('No se pudo acceder a la cámara:', error);
-      return false;
-    }
-  };
-
   const handleButtonClick = () => {
     if (isVideoActived) {
       handTrack.stopVideo(videoRef.current);
       setIsVideoActived(false);
+      dispatch(desactiveCamera({}));
     } else {
       startHandTracking();
     }
