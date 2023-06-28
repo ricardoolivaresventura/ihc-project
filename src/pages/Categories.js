@@ -10,11 +10,15 @@ import {
   startAfter,
   getDoc,
   onSnapshot,
+  writeBatch,
 } from 'firebase/firestore';
-import { db } from '../firebase';
+import { auth, db } from '../firebase';
 import { CircularProgress } from '@mui/material';
 import CategoryItem from '../components/categories/CategoryItem';
 import AddOptionsModal from '../components/globals/AddOptionsModal';
+import NewCategoryModal from '../components/categories/NewCategoryModal';
+import { useDispatch } from 'react-redux';
+import { openSnackbar } from '../context/reducers/generalSnackbar';
 
 export default function Categories() {
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
@@ -23,11 +27,17 @@ export default function Categories() {
   const categoriesRef = collection(db, 'categories');
   const [isNewCategoryModalVisible, setIsNewCategoryModalVisible] = useState(false);
   const [isNewTaskModalVisible, setIsNewTaskModalVisible] = useState(false);
+  const [formError, setFormError] = useState({});
+  const [creating, setCreating] = useState(false);
+  const [newCategory, setNewCategory] = useState('');
+  const user = auth.currentUser;
+  const dispatch = useDispatch();
 
   const options = [
     {
       label: 'Crear categoría',
       action: () => {
+        setIsOptionsVisible(false);
         setIsNewCategoryModalVisible(true);
       },
     },
@@ -78,6 +88,49 @@ export default function Categories() {
     };
   }, []);
 
+  const createCategory = async () => {
+    const errors = {};
+    if (!newCategory) {
+      errors.category = true;
+      errors.categoryMessage = 'El nombre de la categoría es obligatorio';
+    } else {
+      setCreating(true);
+      const batch = writeBatch(db);
+
+      const newCategoryRef = doc(categoriesRef);
+
+      batch.set(newCategoryRef, {
+        name: newCategory?.toLowerCase()?.trim(),
+        userId: user?.uid,
+      });
+
+      await batch
+        .commit()
+        .then(() => {
+          setNewCategory('');
+          dispatch(
+            openSnackbar({
+              type: 'success',
+              message: 'Categoría agregada correctamente',
+            }),
+          );
+        })
+        .catch(() => {
+          dispatch(
+            openSnackbar({
+              type: 'error',
+              message: 'Ocurrió un error al intentar eliminar la categoría',
+            }),
+          );
+        })
+        .finally(() => {
+          setCreating(false);
+          setIsNewCategoryModalVisible(false);
+        });
+    }
+    setFormError(errors);
+  };
+
   return (
     <Container>
       <Header>
@@ -92,12 +145,27 @@ export default function Categories() {
           <Message>Todavía no has agregado ninguna categoría</Message>
         </AuxContainer>
       ) : (
-        categories.map((category, index) => <CategoryItem key={index} category={category} />)
+        <CategoriesContainer>
+          {categories.map((category, index) => (
+            <CategoryItem key={index} category={category} />
+          ))}
+        </CategoriesContainer>
       )}
       <AddOptionsModal
         isVisible={isOptionsVisible}
         setIsVisible={setIsOptionsVisible}
         options={options}
+      />
+      <NewCategoryModal
+        isVisible={isNewCategoryModalVisible}
+        setIsVisible={setIsNewCategoryModalVisible}
+        formError={formError}
+        setFormError={setFormError}
+        creating={creating}
+        setCreating={setCreating}
+        createCategory={createCategory}
+        newCategory={newCategory}
+        setNewCategory={setNewCategory}
       />
     </Container>
   );
@@ -116,6 +184,7 @@ const Header = styled.header`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 16px;
 `;
 
 const Title = styled.p`
@@ -138,4 +207,10 @@ const Message = styled.p`
   color: white;
   font-size: 18px;
   font-family: ${(props) => props.theme.fonts.medium};
+`;
+
+const CategoriesContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
 `;
