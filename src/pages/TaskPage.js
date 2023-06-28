@@ -12,6 +12,8 @@ import CustomSwitch from '../components/globals/CustomSwitch';
 import CategoriesList from '../components/task/CategoriesList';
 import { openSnackbar } from '../context/reducers/generalSnackbar';
 import { useDispatch } from 'react-redux';
+import DateTimeSelector from '../components/globals/DateTimeSelector';
+import dayjs from 'dayjs';
 
 export default function TaskPage() {
   const navigate = useNavigate();
@@ -22,7 +24,8 @@ export default function TaskPage() {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [createdAt, setCreatedAt] = useState(new Date());
+  const today = Date.now();
+  const [createdAt, setCreatedAt] = useState(null);
   const [completed, setCompleted] = useState(false);
   const [selectedPriority, setSelectedPriority] = useState('');
   const [deleting, setDeleting] = useState(false);
@@ -59,14 +62,12 @@ export default function TaskPage() {
 
   useEffect(() => {
     if (task !== null) {
-      if (isMounted.current) {
-        setTitle(task?.title);
-        setDescription(task?.description);
-        setSelectedCategories(task?.categories);
-        setCreatedAt(new Date(task?.createdAt.seconds * 1000));
-        setCompleted(task?.completed);
-        setSelectedPriority(task?.priority);
-      }
+      setCreatedAt(dayjs(new Date(task?.createdAt?.seconds * 1000)));
+      setTitle(task?.title);
+      setDescription(task?.description);
+      setSelectedCategories(task?.categories);
+      setCompleted(task?.completed);
+      setSelectedPriority(task?.priority);
     }
   }, [task]);
 
@@ -215,6 +216,20 @@ export default function TaskPage() {
               />
             ))}
           </PrioritiesContainer>
+          {createdAt !== null && (
+            <InputContainer
+              style={{ marginTop: '30px', paddingRight: '30px', marginBottom: '20px' }}
+            >
+              <Label>Fecha</Label>
+              <div style={{ width: '240px' }}>
+                <DateTimeSelector
+                  type={'date'}
+                  selectedDate={createdAt}
+                  setSelectedDate={setCreatedAt}
+                />
+              </div>
+            </InputContainer>
+          )}
           <Row style={{ marginBottom: '50px' }}>
             <LabelSecondary style={{ fontSize: '24px', flex: 'auto' }}>
               Marcar tarea como completada
@@ -276,6 +291,13 @@ const LabelSecondary = styled.p`
   color: #f6f6f6;
   font-family: ${(props) => props.theme.fonts.medium};
   margin-bottom: 10px;
+`;
+
+const InputContainer = styled.div`
+  padding-right: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 const PrioritiesContainer = styled.div`
