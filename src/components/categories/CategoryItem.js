@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 export default function CategoryItem({ category }) {
-  console.log('category: ', category);
   const navigate = useNavigate();
   const { name, userId, id } = category;
 

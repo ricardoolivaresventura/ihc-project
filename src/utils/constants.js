@@ -43,3 +43,18 @@ export const PRIORITIES = [
     name: 'Sin importancia',
   },
 ];
+
+export const MONTHS = [
+  'enero',
+  'febrero',
+  'marzo',
+  'abril',
+  'mayo',
+  'junio',
+  'julio',
+  'agosto',
+  'septiembre',
+  'octubre',
+  'noviembre',
+  'diciembre',
+];

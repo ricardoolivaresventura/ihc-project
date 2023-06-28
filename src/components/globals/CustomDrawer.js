@@ -16,6 +16,11 @@ export default function CustomDrawer({ children, isOpen, setIsOpen }) {
       ModalProps={{
         keepMounted: true,
       }}
+      PaperProps={{
+        style: {
+          backgroundColor: '#1e1f25',
+        },
+      }}
     >
       <Container>{children}</Container>
     </Drawer>

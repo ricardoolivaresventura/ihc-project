@@ -146,12 +146,12 @@ export default function NewTaskModal({ isVisible, setIsVisible }) {
 }
 
 const Container = styled.div`
+  position: relative;
   padding-left: 30px;
   padding-top: 30px;
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding-bottom: 30px;
 `;
 
 const Title = styled.p`
@@ -161,6 +161,7 @@ const Title = styled.p`
 `;
 
 const Content = styled.div`
+  padding-bottom: 100px;
   flex: 1;
 `;
 
@@ -169,7 +170,10 @@ const InputContainer = styled.div`
 `;
 
 const Footer = styled.div`
+  position: fixed;
   padding-right: 30px;
+  bottom: 10px;
+  width: 355px;
 `;
 
 const Label = styled.p`

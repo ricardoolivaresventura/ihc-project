@@ -3,17 +3,17 @@ import styled from 'styled-components';
 
 export default function CategoryItem({ category, selectedCategories, setSelectedCategories }) {
   const removeCategory = () => {
-    setSelectedCategories(selectedCategories?.filter((item) => item.id !== category.id));
+    setSelectedCategories(selectedCategories?.filter((item) => item !== category.id));
   };
 
   const addCategory = () => {
     const newArray = [...selectedCategories];
-    newArray.push(category);
+    newArray.push(category.id);
     setSelectedCategories(newArray);
   };
 
   const checkIfCategoryIsSelected = () => {
-    return selectedCategories?.findIndex((item) => item.id === category.id) !== -1;
+    return selectedCategories?.findIndex((item) => item === category.id) !== -1;
   };
 
   const handleClick = () => {

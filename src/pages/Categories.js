@@ -11,6 +11,7 @@ import {
   getDoc,
   onSnapshot,
   writeBatch,
+  where,
 } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { CircularProgress } from '@mui/material';
@@ -57,7 +58,7 @@ export default function Categories() {
   }, []);
 
   useEffect(() => {
-    const q = query(categoriesRef, orderBy('name', 'desc'));
+    const q = query(categoriesRef, where('userId', '==', user?.uid), orderBy('name', 'desc'));
 
     const suscriber = onSnapshot(
       q,
