@@ -50,7 +50,7 @@ const HandTracking = () => {
   const runHandTracking = async () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
+    const context = canvas?.getContext('2d');
 
     const predictions = await modelRef.current.detect(video);
 

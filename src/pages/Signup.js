@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import InputWithLabel from '../components/login/InputWithLabel';
@@ -17,6 +17,16 @@ export default function Signup() {
   const [formError, setFormError] = useState({});
   const [loading, setLoading] = useState(false);
   const [loginError, setLoginError] = useState('');
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigate('/');
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const navigateToLoginPage = () => {
     navigate('/login');
