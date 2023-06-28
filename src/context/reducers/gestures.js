@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { PRIORITIES } from '../../utils/constants';
 
 const initialState = {
   isCameraActive: false,
   currentGesture: null,
+  defaultPriority: PRIORITIES[0].value,
 };
 
 const gesturesSlice = createSlice({
@@ -18,9 +20,13 @@ const gesturesSlice = createSlice({
     setCurrentGesture: (state, action) => {
       state.currentGesture = action.payload.currentGesture;
     },
+    setDefaultPriority: (state, action) => {
+      state.defaultPriority = action.payload.defaultPriority;
+    },
   },
 });
 
-export const { activeCamera, desactiveCamera, setCurrentGesture } = gesturesSlice.actions;
+export const { activeCamera, desactiveCamera, setCurrentGesture, setDefaultPriority } =
+  gesturesSlice.actions;
 
 export default gesturesSlice.reducer;

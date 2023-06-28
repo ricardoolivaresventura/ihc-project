@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { setCurrentVoiceCommand } from '../../context/reducers/voiceCommands';
 
 export default function NewTaskModal({ isVisible, setIsVisible }) {
+  const defaultPriority = useSelector((state) => state.gestures.defaultPriority);
   const currentGesture = useSelector((state) => state.gestures.currentGesture);
   const currentVoiceCommand = useSelector((state) => state.voiceCommands.currentVoiceCommand);
   const [creating, setCreating] = useState(false);
@@ -23,7 +24,7 @@ export default function NewTaskModal({ isVisible, setIsVisible }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [selectedPriority, setSelectedPriority] = useState(PRIORITIES[0].value);
+  const [selectedPriority, setSelectedPriority] = useState(defaultPriority);
   const today = Date.now();
   const [selectedDate, setSelectedDate] = useState(dayjs(today));
   const user = auth.currentUser;
@@ -45,6 +46,10 @@ export default function NewTaskModal({ isVisible, setIsVisible }) {
       }),
     );
   }, [currentVoiceCommand, isVisible, creating]);
+
+  useEffect(() => {
+    setSelectedPriority(defaultPriority);
+  }, [defaultPriority]);
 
   const emptyFields = () => {
     setTitle('');
