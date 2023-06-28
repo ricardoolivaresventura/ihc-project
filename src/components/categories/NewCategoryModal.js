@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import ModalContainer from '../globals/ModalContainer';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useSelector } from 'react-redux';
+import { VOICE_COMMANDS } from '../../utils/constants';
 
 const MAX_QUANTITY_OF_CHARACTERS = 50;
 
@@ -19,6 +21,7 @@ export default function NewCategoryModal({
   formError,
   setFormError,
 }) {
+  const currentVoiceCommand = useSelector((state) => state.voiceCommands.currentVoiceCommand);
   const [inputIsFocused, setInputIsFocused] = useState(false);
 
   useEffect(() => {
@@ -26,6 +29,15 @@ export default function NewCategoryModal({
       setFormError({});
     }
   }, [isVisible]);
+
+  useEffect(() => {
+    if (currentVoiceCommand === VOICE_COMMANDS[2].value) {
+      setIsVisible(true);
+    }
+    if (currentVoiceCommand === VOICE_COMMANDS[7].value && isVisible) {
+      setIsVisible(false);
+    }
+  }, [currentVoiceCommand]);
 
   const saveTag = () => {
     createCategory(newCategory?.trim());

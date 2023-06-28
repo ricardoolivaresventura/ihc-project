@@ -3,19 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { collection, doc, getDoc, onSnapshot, query, writeBatch } from 'firebase/firestore';
 import { CircularProgress } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 import { auth, db } from '../firebase';
 import CustomButton from '../components/login/CustomButton';
 import InputWithLabel from '../components/login/InputWithLabel';
-import { PRIORITIES } from '../utils/constants';
+import { PRIORITIES, VOICE_COMMANDS } from '../utils/constants';
 import PriorityItem from '../components/task/PriorityItem';
 import CustomSwitch from '../components/globals/CustomSwitch';
 import CategoriesList from '../components/task/CategoriesList';
 import { openSnackbar } from '../context/reducers/generalSnackbar';
-import { useDispatch } from 'react-redux';
 import DateTimeSelector from '../components/globals/DateTimeSelector';
-import dayjs from 'dayjs';
 
 export default function TaskPage() {
+  const currentVoiceCommand = useSelector((state) => state.voiceCommands.currentVoiceCommand);
   const navigate = useNavigate();
   const { taskId } = useParams();
   const [task, setTask] = useState(null);
@@ -70,6 +71,12 @@ export default function TaskPage() {
       setSelectedPriority(task?.priority);
     }
   }, [task]);
+
+  useEffect(() => {
+    if (currentVoiceCommand === VOICE_COMMANDS[1].value) {
+      setCompleted(true);
+    }
+  }, [currentVoiceCommand]);
 
   const saveChanges = async () => {
     const errors = {};

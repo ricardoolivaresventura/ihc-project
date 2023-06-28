@@ -58,3 +58,38 @@ export const MONTHS = [
   'noviembre',
   'diciembre',
 ];
+
+export const VOICE_COMMANDS = [
+  {
+    value: 'CREATE_NEW_TASK',
+    name: 'Crear nueva tarea',
+  },
+  {
+    value: 'MARK_AS_COMPLETED',
+    name: 'Marcar tarea como completada',
+  },
+  {
+    value: 'CREATE_NEW_CATEGORY',
+    name: 'Crear nueva categoría',
+  },
+  {
+    value: 'DELETE_TASK',
+    name: 'Eliminar tarea',
+  },
+  {
+    value: 'SAVE_NEW_TASK',
+    name: 'Guardar nueva tarea',
+  },
+  {
+    value: 'SAVE_CHANGES',
+    name: 'Guardar cambios',
+  },
+  {
+    value: 'SAVE_NEW_CATEGORY',
+    name: 'Guardar nueva categoría',
+  },
+  {
+    value: 'CLOSE_MODAL',
+    name: 'Cerrar modal',
+  },
+];

@@ -15,6 +15,7 @@ const HandTracking = () => {
   const dispatch = useDispatch();
 
   const startHandTracking = async () => {
+    console.log('startHandTracking');
     const video = videoRef.current;
 
     const defaultParams = {
@@ -73,7 +74,6 @@ const HandTracking = () => {
 
     requestAnimationFrame(runHandTracking);
   };
-
   const handleButtonClick = () => {
     if (isVideoActived) {
       handTrack.stopVideo(videoRef.current);

@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomDrawer from './CustomDrawer';
 import styled from 'styled-components';
 import CustomButton from '../login/CustomButton';
 import InputWithLabel from '../login/InputWithLabel';
-import { PRIORITIES } from '../../utils/constants';
+import { PRIORITIES, VOICE_COMMANDS } from '../../utils/constants';
 import PriorityItem from '../task/PriorityItem';
 import CategoriesList from '../task/CategoriesList';
 import DateTimeSelector from './DateTimeSelector';
 import { auth, db } from '../../firebase';
 import { collection, doc, writeBatch } from 'firebase/firestore';
 import dayjs from 'dayjs';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openSnackbar } from '../../context/reducers/generalSnackbar';
 import { useNavigate } from 'react-router-dom';
 
 export default function NewTaskModal({ isVisible, setIsVisible }) {
+  const currentVoiceCommand = useSelector((state) => state.voiceCommands.currentVoiceCommand);
   const [creating, setCreating] = useState(false);
   const [formError, setFormError] = useState({});
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -27,6 +28,16 @@ export default function NewTaskModal({ isVisible, setIsVisible }) {
   const tasksRef = collection(db, 'tasks');
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (currentVoiceCommand === VOICE_COMMANDS[0].value) {
+      setIsVisible(true);
+    } else if (currentVoiceCommand === VOICE_COMMANDS[7].value && isVisible) {
+      setIsVisible(false);
+    } else if (currentVoiceCommand === VOICE_COMMANDS[4].value) {
+      createTask();
+    }
+  }, [currentVoiceCommand]);
 
   const emptyFields = () => {
     setTitle('');
