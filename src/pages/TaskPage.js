@@ -1,11 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { collection, doc, getDoc, onSnapshot, query } from 'firebase/firestore';
+import { collection, doc, getDoc, onSnapshot, query, writeBatch } from 'firebase/firestore';
 import { CircularProgress } from '@mui/material';
 import { auth, db } from '../firebase';
 import CustomButton from '../components/login/CustomButton';
 import InputWithLabel from '../components/login/InputWithLabel';
+import { PRIORITIES } from '../utils/constants';
+import PriorityItem from '../components/task/PriorityItem';
+import CustomSwitch from '../components/globals/CustomSwitch';
+import CategoriesList from '../components/task/CategoriesList';
+import { openSnackbar } from '../context/reducers/generalSnackbar';
+import { useDispatch } from 'react-redux';
 
 export default function TaskPage() {
   const { taskId } = useParams();
@@ -17,8 +23,12 @@ export default function TaskPage() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [createdAt, setCreatedAt] = useState(new Date());
   const [completed, setCompleted] = useState(false);
+  const [selectedPriority, setSelectedPriority] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [savingChanges, setSavingChanges] = useState(false);
   const isMounted = useRef(false);
   const taskCollection = collection(db, 'tasks');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     isMounted.current = true;
@@ -49,8 +59,52 @@ export default function TaskPage() {
       setSelectedCategories(task.categories);
       setCreatedAt(new Date(task.createdAt.seconds * 1000));
       setCompleted(task.completed);
+      setSelectedPriority(task.priority);
     }
   }, [task]);
+
+  const saveChanges = async () => {
+    const errors = {};
+    if (!title) {
+      errors.title = true;
+      errors.titleMessage = 'El título es obligatorio';
+    } else {
+      setSavingChanges(true);
+      const batch = writeBatch(db);
+      const taskReference = doc(taskCollection, taskId);
+
+      batch.update(taskReference, {
+        title: title.toLowerCase().trim(),
+        description,
+        priority: selectedPriority,
+        categories: selectedCategories,
+        createdAt: createdAt instanceof Date ? createdAt : createdAt.toDate(),
+        completed,
+      });
+      await batch
+        .commit()
+        .then(() => {
+          dispatch(
+            openSnackbar({
+              type: 'success',
+              message: 'Tarea actualizada correctamente',
+            }),
+          );
+        })
+        .catch(() => {
+          dispatch(
+            openSnackbar({
+              type: 'error',
+              message: 'Ocurrió un error al actualizar la tarea',
+            }),
+          );
+        })
+        .finally(() => {
+          setSavingChanges(false);
+        });
+    }
+    setFormError(errors);
+  };
 
   if (task == null) {
     return (
@@ -69,11 +123,20 @@ export default function TaskPage() {
     );
   }
 
+  const handleChange = () => {
+    setCompleted(!completed);
+  };
+
   return (
     <Container>
       <Header>
         <Title>Detalles de tarea</Title>
-        <CustomButton title={'Guardar cambios'} maxWidth={300} />
+        <CustomButton
+          loading={deleting || savingChanges}
+          title={'Guardar cambios'}
+          maxWidth={300}
+          handleClick={saveChanges}
+        />
       </Header>
       <Content>
         <Column>
@@ -97,8 +160,35 @@ export default function TaskPage() {
             background='#050505'
             marginTop={30}
           />
+          <CategoriesList
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+          />
         </Column>
-        <Column></Column>
+        <Column style={{ paddingTop: '30px' }}>
+          <Label>Prioridad</Label>
+          <PrioritiesContainer>
+            {PRIORITIES.map((priority, index) => (
+              <PriorityItem
+                {...priority}
+                key={index}
+                selectedPriority={selectedPriority}
+                setSelectedPriority={setSelectedPriority}
+              />
+            ))}
+          </PrioritiesContainer>
+          <Row style={{ marginBottom: '50px' }}>
+            <LabelSecondary style={{ fontSize: '24px', flex: 'auto' }}>
+              Marcar tarea como completada
+            </LabelSecondary>
+            <CustomSwitch handleChange={handleChange} checked={completed} />
+          </Row>
+          <CustomButton
+            loading={deleting || savingChanges}
+            title={'Eliminar tarea'}
+            withBackground={false}
+          />
+        </Column>
       </Content>
     </Container>
   );
@@ -128,8 +218,39 @@ const Title = styled.p`
 
 const Content = styled.div`
   display: grid;
-  grid-template-columns: repeat(1fr, 1.5fr);
+  grid-template-columns: 1fr 1.5fr;
   gap: 100px;
 `;
 
 const Column = styled.div``;
+
+const Label = styled.p`
+  font-size: 16px;
+  color: #f6f6f6;
+  flex: 1;
+  font-family: ${(props) => props.theme.fonts.medium};
+  margin-bottom: 10px;
+`;
+
+const LabelSecondary = styled.p`
+  font-size: 16px;
+  color: #f6f6f6;
+  font-family: ${(props) => props.theme.fonts.medium};
+  margin-bottom: 10px;
+`;
+
+const PrioritiesContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 50px;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+`;
