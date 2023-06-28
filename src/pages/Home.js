@@ -151,6 +151,7 @@ export default function Home() {
           tasks={criticalTasks}
           setTasks={setCriticalTasks}
           message={'No has agregado ninguna tarea CRÍTICA'}
+          bgColor='#14FF00'
         />
         <PriorityColumn
           title={'Urgente'}
@@ -158,6 +159,7 @@ export default function Home() {
           tasks={urgentTasks}
           setTasks={setUrgentTasks}
           message={'No has agregado ninguna tarea URGENTE'}
+          bgColor='rgba(20, 255, 0, 0.8)'
         />
         <PriorityColumn
           title={'Importante'}
@@ -165,6 +167,7 @@ export default function Home() {
           tasks={importantTasks}
           setTasks={setImportantTasks}
           message={'No has agregado ninguna tarea IMPORTANTE'}
+          bgColor='rgba(20, 255, 0, 0.6)'
         />
         <PriorityColumn
           title={'Aplazable'}
@@ -172,6 +175,7 @@ export default function Home() {
           tasks={deferrableTasks}
           setTasks={setDeferrableTasks}
           message={'No has agregado ninguna tarea APLAZABLE'}
+          bgColor='rgba(20, 255, 0, 0.5)'
         />
         <PriorityColumn
           title={'Sin importancia'}
@@ -179,6 +183,7 @@ export default function Home() {
           tasks={withoutImportanceTasks}
           setTasks={setWithoutImportanceTasks}
           message={'No has agregado ninguna tarea SIN IMPORTANCIA'}
+          bgColor='rgba(20, 255, 0, 0.4)'
         />
       </Columns>
       <AddOptionsModal
