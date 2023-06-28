@@ -107,7 +107,7 @@ export default function Signup() {
           placeholder='Escribe tu correo aquí'
           error={formError.email}
           errorMessage={formError.emailError}
-          marginTop={30}
+          marginTop={20}
         />
         <InputWithLabel
           value={password}
@@ -148,7 +148,7 @@ export default function Signup() {
 const Container = styled.div`
   flex: 1;
   background-color: #141516;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   display: grid;
   grid-template-columns: 1.7fr 1fr;
@@ -179,7 +179,7 @@ const RightContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 90px;
+  padding-top: 50px;
   padding-left: 5%;
   padding-right: 5%;
 `;
@@ -208,8 +208,8 @@ const BottomCircle = styled.div`
 const LogoContainer = styled.div``;
 
 const Logo = styled.img`
-  height: 140px;
-  width: 140px;
+  height: 120px;
+  width: 120px;
 `;
 
 const Title = styled.p`
