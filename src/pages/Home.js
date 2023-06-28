@@ -5,14 +5,18 @@ import AddIcon from '@mui/icons-material/Add';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 import CustomButton from '../components/login/CustomButton';
+import NewCategoryModal from '../components/categories/NewCategoryModal';
 import AddOptionsModal from '../components/globals/AddOptionsModal';
 import NewTaskModal from '../components/globals/NewTaskModal';
 import PriorityColumn from '../components/home/PriorityColumn';
 import { PRIORITIES } from '../utils/constants';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import HandTracking from '../components/globals/HandTracking';
+import { openSnackbar } from '../context/reducers/generalSnackbar';
+import { useDispatch } from 'react-redux';
+import { collection, doc, writeBatch } from 'firebase/firestore';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -24,7 +28,13 @@ export default function Home() {
   const [importantTasks, setImportantTasks] = useState(null);
   const [deferrableTasks, setDeferrableTasks] = useState(null);
   const [withoutImportanceTasks, setWithoutImportanceTasks] = useState(null);
+  const [formError, setFormError] = useState({});
+  const [creating, setCreating] = useState(false);
+  const [newCategory, setNewCategory] = useState('');
   const [authenticated, setAuthenticated] = useState(null);
+  const user = auth.currentUser;
+  const dispatch = useDispatch();
+  const categoriesRef = collection(db, 'categories');
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -54,6 +64,50 @@ export default function Home() {
       },
     },
   ];
+
+  const createCategory = async () => {
+    const errors = {};
+    if (!newCategory) {
+      errors.category = true;
+      errors.categoryMessage = 'El nombre de la categoría es obligatorio';
+    } else {
+      setCreating(true);
+      const batch = writeBatch(db);
+
+      const newCategoryRef = doc(categoriesRef);
+
+      batch.set(newCategoryRef, {
+        name: newCategory?.toLowerCase()?.trim(),
+        userId: user?.uid,
+      });
+
+      await batch
+        .commit()
+        .then(() => {
+          setNewCategory('');
+          dispatch(
+            openSnackbar({
+              type: 'success',
+              message: 'Categoría agregada correctamente',
+            }),
+          );
+          navigate('/categories');
+        })
+        .catch(() => {
+          dispatch(
+            openSnackbar({
+              type: 'error',
+              message: 'Ocurrió un error al intentar eliminar la categoría',
+            }),
+          );
+        })
+        .finally(() => {
+          setCreating(false);
+          setIsNewCategoryModalVisible(false);
+        });
+    }
+    setFormError(errors);
+  };
 
   if (authenticated == null) {
     return (
@@ -116,6 +170,17 @@ export default function Home() {
         isVisible={isOptionsVisible}
         setIsVisible={setIsOptionsVisible}
         options={options}
+      />
+      <NewCategoryModal
+        isVisible={isNewCategoryModalVisible}
+        setIsVisible={setIsNewCategoryModalVisible}
+        formError={formError}
+        setFormError={setFormError}
+        creating={creating}
+        setCreating={setCreating}
+        createCategory={createCategory}
+        newCategory={newCategory}
+        setNewCategory={setNewCategory}
       />
       <NewTaskModal isVisible={isNewTaskModalVisible} setIsVisible={setIsNewTaskModalVisible} />
     </Container>
