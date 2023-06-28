@@ -1,9 +1,17 @@
 import React from 'react';
 import Drawer from '@mui/material/Drawer';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { setCurrentVoiceCommand } from '../../context/reducers/voiceCommands';
 
 export default function CustomDrawer({ children, isOpen, setIsOpen }) {
+  const dispatch = useDispatch();
   const handleClose = () => {
+    dispatch(
+      setCurrentVoiceCommand({
+        currentVoiceCommand: null,
+      }),
+    );
     setIsOpen(false);
   };
 

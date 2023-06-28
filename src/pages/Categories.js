@@ -20,6 +20,7 @@ import AddOptionsModal from '../components/globals/AddOptionsModal';
 import NewCategoryModal from '../components/categories/NewCategoryModal';
 import { useDispatch } from 'react-redux';
 import { openSnackbar } from '../context/reducers/generalSnackbar';
+import NewTaskModal from '../components/globals/NewTaskModal';
 
 export default function Categories() {
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
@@ -168,6 +169,7 @@ export default function Categories() {
         newCategory={newCategory}
         setNewCategory={setNewCategory}
       />
+      <NewTaskModal isVisible={isNewTaskModalVisible} setIsVisible={setIsNewTaskModalVisible} />
     </Container>
   );
 }

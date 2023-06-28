@@ -5,8 +5,9 @@ import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import ModalContainer from '../globals/ModalContainer';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { VOICE_COMMANDS } from '../../utils/constants';
+import { setCurrentVoiceCommand } from '../../context/reducers/voiceCommands';
 
 const MAX_QUANTITY_OF_CHARACTERS = 50;
 
@@ -23,7 +24,7 @@ export default function NewCategoryModal({
 }) {
   const currentVoiceCommand = useSelector((state) => state.voiceCommands.currentVoiceCommand);
   const [inputIsFocused, setInputIsFocused] = useState(false);
-
+  const dispatch = useDispatch();
   useEffect(() => {
     if (!isVisible) {
       setFormError({});
@@ -31,19 +32,30 @@ export default function NewCategoryModal({
   }, [isVisible]);
 
   useEffect(() => {
-    if (currentVoiceCommand === VOICE_COMMANDS[2].value) {
+    if (currentVoiceCommand === VOICE_COMMANDS[2].value && !isVisible) {
       setIsVisible(true);
-    }
-    if (currentVoiceCommand === VOICE_COMMANDS[7].value && isVisible) {
+    } else if (currentVoiceCommand === VOICE_COMMANDS[7].value && isVisible) {
       setIsVisible(false);
+    } else if (currentVoiceCommand === VOICE_COMMANDS[6].value && isVisible && !creating) {
+      createCategory(newCategory?.trim());
     }
-  }, [currentVoiceCommand]);
+    dispatch(
+      setCurrentVoiceCommand({
+        currentVoiceCommand: null,
+      }),
+    );
+  }, [currentVoiceCommand, isVisible, creating]);
 
   const saveTag = () => {
     createCategory(newCategory?.trim());
   };
 
   const handleClose = () => {
+    dispatch(
+      setCurrentVoiceCommand({
+        currentVoiceCommand: null,
+      }),
+    );
     setIsVisible(false);
     if (!creating) {
       setFormError({});

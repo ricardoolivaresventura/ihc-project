@@ -13,89 +13,89 @@ export default function SpeechTracking() {
     {
       command: 'Crear nueva tarea',
       callback: () => {
+        resetTranscript();
         dispatch(
           setCurrentVoiceCommand({
             currentVoiceCommand: VOICE_COMMANDS[0].value,
           }),
         );
-        resetTranscript();
       },
     },
     {
       command: 'Marcar como completada',
       callback: () => {
+        resetTranscript();
         dispatch(
           setCurrentVoiceCommand({
             currentVoiceCommand: VOICE_COMMANDS[1].value,
           }),
         );
-        resetTranscript();
       },
     },
     {
       command: 'Crear nueva categoría',
       callback: () => {
+        resetTranscript();
         dispatch(
           setCurrentVoiceCommand({
             currentVoiceCommand: VOICE_COMMANDS[2].value,
           }),
         );
-        resetTranscript();
       },
     },
     {
       command: 'Eliminar tarea',
       callback: () => {
+        resetTranscript();
         dispatch(
           setCurrentVoiceCommand({
             currentVoiceCommand: VOICE_COMMANDS[3].value,
           }),
         );
-        resetTranscript();
       },
     },
     {
-      command: 'Guardar nueva tarea',
+      command: 'Guardar tarea',
       callback: () => {
+        resetTranscript();
         dispatch(
           setCurrentVoiceCommand({
             currentVoiceCommand: VOICE_COMMANDS[4].value,
           }),
         );
-        resetTranscript();
       },
     },
     {
       command: 'Guardar cambios',
       callback: () => {
+        resetTranscript();
         dispatch(
           setCurrentVoiceCommand({
             currentVoiceCommand: VOICE_COMMANDS[5].value,
           }),
         );
-        resetTranscript();
       },
     },
     {
-      command: 'Guardar nueva categoría',
+      command: 'Guardar categoría',
       callback: () => {
+        resetTranscript();
         dispatch(
           setCurrentVoiceCommand({
             currentVoiceCommand: VOICE_COMMANDS[6].value,
           }),
         );
-        resetTranscript();
       },
     },
     {
       command: 'Cerrar modal',
       callback: () => {
+        resetTranscript();
         dispatch(
           setCurrentVoiceCommand({
             currentVoiceCommand: VOICE_COMMANDS[7].value,
           }),
         );
-        resetTranscript();
       },
     },
   ];

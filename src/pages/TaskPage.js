@@ -14,6 +14,7 @@ import CustomSwitch from '../components/globals/CustomSwitch';
 import CategoriesList from '../components/task/CategoriesList';
 import { openSnackbar } from '../context/reducers/generalSnackbar';
 import DateTimeSelector from '../components/globals/DateTimeSelector';
+import { setCurrentVoiceCommand } from '../context/reducers/voiceCommands';
 
 export default function TaskPage() {
   const currentVoiceCommand = useSelector((state) => state.voiceCommands.currentVoiceCommand);
@@ -75,8 +76,13 @@ export default function TaskPage() {
   useEffect(() => {
     if (currentVoiceCommand === VOICE_COMMANDS[1].value) {
       setCompleted(true);
+    } else if (currentVoiceCommand === VOICE_COMMANDS[3].value && !deleting && !savingChanges) {
+      deleteTask();
+    } else if (currentVoiceCommand === VOICE_COMMANDS[5].value && !deleting && !savingChanges) {
+      saveChanges();
     }
-  }, [currentVoiceCommand]);
+    dispatch(setCurrentVoiceCommand({ currentVoiceCommand: null }));
+  }, [currentVoiceCommand, deleting, savingChanges]);
 
   const saveChanges = async () => {
     const errors = {};

@@ -13,6 +13,7 @@ import dayjs from 'dayjs';
 import { useDispatch, useSelector } from 'react-redux';
 import { openSnackbar } from '../../context/reducers/generalSnackbar';
 import { useNavigate } from 'react-router-dom';
+import { setCurrentVoiceCommand } from '../../context/reducers/voiceCommands';
 
 export default function NewTaskModal({ isVisible, setIsVisible }) {
   const currentVoiceCommand = useSelector((state) => state.voiceCommands.currentVoiceCommand);
@@ -34,10 +35,15 @@ export default function NewTaskModal({ isVisible, setIsVisible }) {
       setIsVisible(true);
     } else if (currentVoiceCommand === VOICE_COMMANDS[7].value && isVisible) {
       setIsVisible(false);
-    } else if (currentVoiceCommand === VOICE_COMMANDS[4].value) {
+    } else if (currentVoiceCommand === VOICE_COMMANDS[4].value && isVisible && !creating) {
       createTask();
     }
-  }, [currentVoiceCommand]);
+    dispatch(
+      setCurrentVoiceCommand({
+        currentVoiceCommand: null,
+      }),
+    );
+  }, [currentVoiceCommand, isVisible, creating]);
 
   const emptyFields = () => {
     setTitle('');
