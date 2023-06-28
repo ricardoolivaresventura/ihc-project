@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { setCurrentVoiceCommand } from '../../context/reducers/voiceCommands';
 
 export default function NewTaskModal({ isVisible, setIsVisible }) {
+  const currentGesture = useSelector((state) => state.gestures.currentGesture);
   const currentVoiceCommand = useSelector((state) => state.voiceCommands.currentVoiceCommand);
   const [creating, setCreating] = useState(false);
   const [formError, setFormError] = useState({});

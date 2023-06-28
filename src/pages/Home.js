@@ -17,6 +17,7 @@ import HandTracking from '../components/globals/HandTracking';
 import { openSnackbar } from '../context/reducers/generalSnackbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { collection, doc, writeBatch } from 'firebase/firestore';
+import { setCurrentGesture } from '../context/reducers/gestures';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -55,6 +56,11 @@ export default function Home() {
     } else if (currentGesture === 'closed') {
       setIsNewTaskModalVisible(false);
     }
+    dispatch(
+      setCurrentGesture({
+        currentGesture: null,
+      }),
+    );
   }, [currentGesture]);
 
   const options = [
