@@ -23,8 +23,8 @@ https://drive.google.com/drive/u/3/folders/1mPgk3ao6U0WveDterNkR_glxeC70rfXk
 
 ## Carácterísticas de la aplicación
 - Registro de usuario e Inicio de sesión.
-- Página principal con los tareas/eventos agendadas mostradas/etiquetadas por prioridad.
-- Agregar Tarea/Evento a la agenda.
+- Página principal con los tareas agendadas mostradas en columnas de prioridad.
+- Crear tareas
 - Editar/Borrar tarea/evento de la agenda.
 - Contará con recordatorio para tareas urgentes/próximas.
 - Usará un sistema de 'gamificación' cada vez que el usuario cumpla con sus tareas/eventos programados.
