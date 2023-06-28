@@ -12,6 +12,7 @@ import { PRIORITIES } from '../utils/constants';
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
+import HandTracking from '../components/globals/HandTracking';
 
 export default function Home() {
   const navigate = useNavigate();
