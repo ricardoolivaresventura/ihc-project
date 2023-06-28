@@ -5,42 +5,35 @@ import AddIcon from '@mui/icons-material/Add';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUp from '@mui/icons-material/KeyboardArrowUp';
 import CustomButton from '../components/login/CustomButton';
+import AddOptionsModal from '../components/globals/AddOptionsModal';
 
 export default function Home() {
   const [isOptionsVisible, setIsOptionsVisible] = useState(false);
+  const [isNewCategoryModalVisible, setIsNewCategoryModalVisible] = useState(false);
+  const [isNewTaskModalVisible, setIsNewTaskModalVisible] = useState(false);
 
   const options = [
     {
       label: 'Crear categoría',
-      action: () => {},
+      action: () => {
+        setIsNewCategoryModalVisible(true);
+      },
     },
     {
       label: 'Crear tarea',
-      action: () => {},
+      action: () => {
+        setIsNewTaskModalVisible(true);
+      },
     },
   ];
 
   return (
     <Container>
-      <AddButtonContainer>
-        {isOptionsVisible &&
-          options.map((opt, index) => (
-            <CustomButton
-              title={opt.label}
-              handleClick={opt.action}
-              key={index}
-              paddingLeft={40}
-              paddingRight={40}
-            />
-          ))}
-        <AddButton onClick={() => setIsOptionsVisible(!isOptionsVisible)}>
-          {isOptionsVisible ? (
-            <KeyboardArrowDownIcon style={{ color: 'white' }} fontSize='large' />
-          ) : (
-            <KeyboardArrowUp style={{ color: 'white' }} fontSize='large' />
-          )}
-        </AddButton>
-      </AddButtonContainer>
+      <AddOptionsModal
+        isVisible={isOptionsVisible}
+        setIsVisible={setIsOptionsVisible}
+        options={options}
+      />
     </Container>
   );
 }
